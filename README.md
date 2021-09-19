@@ -1,2 +1,2 @@
 # intune
-PowerShell scripts for Microsoft Endpoint Manager/Intune Proactive Remediation
+This repository includes PowerShell scripts for use with Microsoft Endpoint Manager/Intune Proactive Remediation.
