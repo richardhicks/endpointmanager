@@ -1,10 +1,10 @@
 <#
 
 .SYNOPSIS
-    PowerShell script to detect the value of DisableMobility in raspshone.pbk for Always On VPN user tunnel connections.
+    PowerShell script to detect the value of IpDnsFlags in raspshone.pbk for Always On VPN user tunnel connections.
 
 .EXAMPLE
-    .\Detect-UserDisableIkeMobility.ps1
+    .\Detect-UserRegisterDNS.ps1
 
 .DESCRIPTION
     This PowerShell script is deployed as a detection script using Proactive Remediations in Microsoft Endpoint Manager/Intune.
@@ -17,8 +17,8 @@
 
 .NOTES
     Version:        1.0
-    Creation Date:  December 4, 2021
-    Last Updated:   December 4, 2021
+    Creation Date:  September 24, 2021
+    Last Updated:   September 24, 2021
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -43,27 +43,27 @@ Try {
 
     }
 
-    $RasphoneData = (Get-Content $RasphonePath | Select-String DisableMobility) | ConvertFrom-StringData
+    $RasphoneData = (Get-Content $RasphonePath | Select-String IpDnsFlags) | ConvertFrom-StringData
 
-    If ($RasphoneData.DisableMobility -eq '0') {
+    If ($RasphoneData.IpDnsFlags -eq '0') {
 
-        Write-Verbose 'DisableMobility set to 0. Remediation required.'
+        Write-Verbose 'IpDnsFlags set to 0. Remediation required.'
         Exit 1
 
     }
-    
-    Else { 
 
-        Write-Verbose 'DisableMobility set to 1. No remediation required.'
+    Else {
+
+        Write-Verbose 'IpDnsFlags set to 1. No remediation required.'
         Exit 0
-        
+
     }
 
 }
 
 Catch {
 
-    $ErrorMessage = $_.Exception.Message 
+    $ErrorMessage = $_.Exception.Message
     Write-Warning $ErrorMessage
     Exit 1
 
@@ -72,8 +72,8 @@ Catch {
 # SIG # Begin signature block
 # MIInHwYJKoZIhvcNAQcCoIInEDCCJwwCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUOBtE3kk2oq0/CkqLiconRoYg
-# LBeggiDHMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUe3nx/fVXJAfYl6GcBRLiyvgA
+# +WSggiDHMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
 # AQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBBc3N1cmVk
 # IElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAwWhcNMzExMTA5MjM1OTU5WjBiMQsw
@@ -253,30 +253,30 @@ Catch {
 # QTQwOTYgU0hBMzg0IDIwMjEgQ0ExAhABZnISBJVCuLLqeeLTB6xEMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBR+MK86Ua+DFvT0xqC6s5ZzbWs7CTANBgkqhkiG9w0BAQEFAASCAYBg
-# yo1M0ZO0eUYgAb95rIqI+3o+JlWPnxNIdDu7B50H1C1Aj/1AuAkJ4BttQCjXroit
-# y0gdzhdtoS0Q2twQKkPNj9+WGHEDHXPYNNWXBw1TRwauFbHgYDbI+W4liD4c59v7
-# pW8mvIWsEc51QfzwbmIgpAg1JyoypriT5fNmGrJg0g/rmUF+F963pQKy/2HXnPsJ
-# cYCaF7oJkAmOs23vfqF1P9WybfhCbpP0ahbYKyAx/9g2v2o25bns5Jqcpzb4l8BH
-# YcuL6tU1woT2unkeIqO1x3aTvIMNiWdDrWDxhxq95Rai2t/2QdY0+acg7h/gJr/j
-# BT3quB9O4nzdrkpRsi8h8Uxx1c+Np2ymmJdcwKhWxy4/zsRPciJf425+wzXrdMtG
-# fLTWhP8AN14msLXuTutIplTt3IKMVU8JK9/vLt2wNhRjc2cyqzRLgwf891Re7RQx
-# 1a8tUaShKID59tn0LPdeeeT/5TCMU/MbJLxomMxET1Ub7ii3J7yKd4jUEfKdq5qh
+# DQEJBDEWBBQHlrLznnrD9vq9NNt/ggT2pzvmnTANBgkqhkiG9w0BAQEFAASCAYCT
+# GCsC7dGbKeirlC5nthj5jy4Ot8WiGKomBQ2PLjkuJz/S/qzktLZjeUa11w6OuDij
+# VgQOe1s8RsoJPYJ5lS6fi3yE0vxrXON6sNUWvrnM1fDz3KjJg23M5j3UXcSeba8b
+# VBZQLhJvAXCEi2/tQbH/OwUn3LmCdKk3fG7Pk9RxCD71C3vJ09l7sYrtHEoBpdn0
+# HaZouJ6xFf8xCiSTRlAcHTFie1UzjX2ROhfOqjZrL+VmsGItVqVbA8eETnQCVH73
+# GDG6xzeIZMhaVXHrQRlB1CCn3BBVPzpPI3oogP15MYQfG7Jg7PJlJ4QR85tFCW+A
+# uIGDDtFlahVxuZ4bmr7djmHW/DMeIMSlHkG3+W5SD0d0DV/XuN+CAULJTZlqGhmL
+# SaO4O59QYUvCwlIS2m78e6ilKhezGTe5jRMaF2g5HKd0iqQX6mtWRf6NU1BH2+V4
+# pChFHFl7gCIAgUnbgQEDU43KEeCAD6dYgFUqMJc1vpFhVqBmYFthXhvR6pUa9Uyh
 # ggMgMIIDHAYJKoZIhvcNAQkGMYIDDTCCAwkCAQEwdzBjMQswCQYDVQQGEwJVUzEX
 # MBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0
 # ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhAKekqInsmZQpAG
 # YzhNhpedMA0GCWCGSAFlAwQCAQUAoGkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEH
 # ATAcBgkqhkiG9w0BCQUxDxcNMjIwODE3MjMxOTIyWjAvBgkqhkiG9w0BCQQxIgQg
-# /rE1/bMjGL23dMRQBTEOkYf4aY9hiqRSh8J3zMyqz4AwDQYJKoZIhvcNAQEBBQAE
-# ggIAqfKPNqOzqvO5JMEcJ/eOHMpJVqvX6srCXAMdz+wh2G5Sn7qGdOyfqCj4970l
-# sSbieuQ5/vny/ZJpuuU9LhCcZ+eJRUuCu68wEB6WQw/5yMr45tCTVqNfI275gpAK
-# mpa625dpxL3y7NSgwo3TbOiPfOH5hIYjrweV7Y6Vj7m0oewAnbCOiE/X8LLdMGFP
-# HPgUNVnP7xGMV1B4jwEtA/XP5dIrp62yEOMMjp9BDabiE8/HCdM+laysimylaKSJ
-# LCWKXLpJJhv6tEP3ftJCpwx++4V3O80LztrxOyRDCYsgSqsqyfZsXVDxlDS8sJoi
-# XIw/MSYmwuUKwwiQNKTzJoAf3pGVUjMq8/js9bAn96TNLIzpiU/KysZEfNvuzFOl
-# LBYfZowefwdF5GtP5ICyY1d8a/5eqkogKltOKWvOUA4f7PK1Vpb/LEio4y5BKceC
-# K0Esd9b5aD6gR1oxev7MG5MzbFU8W92mp6dukrZaQQmbCawVaHoG3pcO06p1S8lR
-# wX/caDeZGkASlNfjmNaTPaKn6JxU4K72OjKEOTvjgkn1xkk/Cg5s02G5/29cEOKC
-# FQYxmPHExY367ZqEAyuRJZe7MTKjfKwo03zqKvHeGIB9dQAadArAtRAIPhq60/NT
-# zHT5fjqCrhlbwB3wcW6uyjSljuIUTFFI0xgIZ8LHMUdvM4g=
+# hFA1zf7hjhz6b4R4t5D34h+3helAjCUu3keBAPevJiAwDQYJKoZIhvcNAQEBBQAE
+# ggIAGheggkZlInykLOLZqo7QfgJnj79On4U1h3wF8HwB0mLsZGBXTZv4M8Abrbyl
+# NPsyvDvUdBsFT5sWBLTd+pjv5viUkL0sBs16gP3APnu6p7vw8O5yH8vwux1P82JU
+# Z0kg9tzJVzjfFHRJltpqBsuB9EPgE56DMSZXNUmvz02vHULlsGc1sVul4h4vVV60
+# 1IwgYqe9+4hChupHIEcXoX4qQ1JprFWRpjRngPNqaSXVV3HBlN9Pl+5EgHMHqNAF
+# jH65NaAbo8IQsioMYKQHuvvnDDA7q7vRtxlfgrz/SR/SRZLeP7tCzsA/PxzAXdfR
+# jGB96m+Bo6bmNgL6TMZ8ZdpeN2LhRNe45AlwHfGdgxbi6YnkWzJfbKIk+oiGwoMB
+# n7vnYVkjmMFTBr+4AZ80BycaOS46iinUKH4x6xbDfgyFtTODy1yL/I7LRhFvN8a1
+# B5+K9n/LTgDYkem+cySNUEqvTZsRA+9gLN+2uHZulqQlVOIWUDhMwCb88UcEnA8L
+# O7btquZqu0xCNliaq3uzejW8c5ob0G2yXA5cxjSKIUujtQL8sOzo0eyqC4LmC5Uc
+# wKD6wHpC084H83dZmsiQno2qY0d03xcQO/p1aGFLHVNyiIEEvZcfTVTQB29KXMqj
+# fgY0VV+GxEf3T4b7Bna5VETQL9iZaNzS5b8VdIIt2bFINog=
 # SIG # End signature block

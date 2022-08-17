@@ -1,10 +1,10 @@
 <#
 
 .SYNOPSIS
-    PowerShell script to detect the value of DisableMobility in raspshone.pbk for Always On VPN user tunnel connections.
+    PowerShell script to detect the value of DisableMobility in raspshone.pbk for Always On VPN user tunnel connections deployed in the 'all users' context.
 
 .EXAMPLE
-    .\Detect-UserDisableIkeMobility.ps1
+    .\Detect-AllUsersDisableIkeMobility.ps1
 
 .DESCRIPTION
     This PowerShell script is deployed as a detection script using Proactive Remediations in Microsoft Endpoint Manager/Intune.
@@ -17,8 +17,8 @@
 
 .NOTES
     Version:        1.0
-    Creation Date:  December 4, 2021
-    Last Updated:   December 4, 2021
+    Creation Date:  February 18, 2022
+    Last Updated:   February 18, 2022
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -32,7 +32,7 @@ Param (
 
 )
 
-$RasphonePath = Join-Path -Path $env:appdata -ChildPath '\Microsoft\Network\Connections\Pbk\rasphone.pbk'
+$RasphonePath = Join-Path -Path $env:ProgramData -ChildPath '\Microsoft\Network\Connections\Pbk\rasphone.pbk'
 
 Try {
 
@@ -72,8 +72,8 @@ Catch {
 # SIG # Begin signature block
 # MIInHwYJKoZIhvcNAQcCoIInEDCCJwwCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUOBtE3kk2oq0/CkqLiconRoYg
-# LBeggiDHMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU7DlzUeSBBZ3EQNcrV3x+LCP1
+# 2J2ggiDHMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
 # AQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBBc3N1cmVk
 # IElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAwWhcNMzExMTA5MjM1OTU5WjBiMQsw
@@ -253,30 +253,30 @@ Catch {
 # QTQwOTYgU0hBMzg0IDIwMjEgQ0ExAhABZnISBJVCuLLqeeLTB6xEMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBR+MK86Ua+DFvT0xqC6s5ZzbWs7CTANBgkqhkiG9w0BAQEFAASCAYBg
-# yo1M0ZO0eUYgAb95rIqI+3o+JlWPnxNIdDu7B50H1C1Aj/1AuAkJ4BttQCjXroit
-# y0gdzhdtoS0Q2twQKkPNj9+WGHEDHXPYNNWXBw1TRwauFbHgYDbI+W4liD4c59v7
-# pW8mvIWsEc51QfzwbmIgpAg1JyoypriT5fNmGrJg0g/rmUF+F963pQKy/2HXnPsJ
-# cYCaF7oJkAmOs23vfqF1P9WybfhCbpP0ahbYKyAx/9g2v2o25bns5Jqcpzb4l8BH
-# YcuL6tU1woT2unkeIqO1x3aTvIMNiWdDrWDxhxq95Rai2t/2QdY0+acg7h/gJr/j
-# BT3quB9O4nzdrkpRsi8h8Uxx1c+Np2ymmJdcwKhWxy4/zsRPciJf425+wzXrdMtG
-# fLTWhP8AN14msLXuTutIplTt3IKMVU8JK9/vLt2wNhRjc2cyqzRLgwf891Re7RQx
-# 1a8tUaShKID59tn0LPdeeeT/5TCMU/MbJLxomMxET1Ub7ii3J7yKd4jUEfKdq5qh
+# DQEJBDEWBBSAw/XKfTVQ12UwwyixBTNnpnCTCjANBgkqhkiG9w0BAQEFAASCAYB6
+# ltpwmxdv08D5G8iKwwOqtxpPm6N0zTBsjTKHrbLGWZcrZRjd4GuZPcaUrfGJd6mV
+# kwWJkoe5lTEupxHARmOjm+o6Mr4DpXfAjK+DiMxMWnMPFxuo43+df4Dmam+ZfWLW
+# KPV7L6NEB+rj/pH8HVUSiCwJmX2wUtA1jg9jk2LRiBWg7p7GQkxKYZqpWj3GRWzM
+# Y3Uyzg2oHzVucCdIKXWk/zZXtkad7rp68RIqcPtynr0tuIACrLJdzbFMjgylI+3T
+# iGAdj/k6KSMH7N+Yb4asMSb9Q//SDkNMsKBFtltPfUtxbYkJeRnMXOLnhch0Ot8x
+# pBVYccEx8Aaq+zKyNrSnndxt/5Qv9U+RJwDid25ROYFMwpz8pKb5CwTpGBbTF60a
+# 6inW4swhuiM2fvM87cFQhapQb1Au8dXI5h8arT/vdvJQ4NoeHwyPU80FVJbi8xmO
+# 7mScsYW3gTMWPTxddt4C309v+/xtVPz0yCiY6/oWMfGkKbUstkkX8lwQgyKP+P+h
 # ggMgMIIDHAYJKoZIhvcNAQkGMYIDDTCCAwkCAQEwdzBjMQswCQYDVQQGEwJVUzEX
 # MBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0
 # ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhAKekqInsmZQpAG
 # YzhNhpedMA0GCWCGSAFlAwQCAQUAoGkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEH
-# ATAcBgkqhkiG9w0BCQUxDxcNMjIwODE3MjMxOTIyWjAvBgkqhkiG9w0BCQQxIgQg
-# /rE1/bMjGL23dMRQBTEOkYf4aY9hiqRSh8J3zMyqz4AwDQYJKoZIhvcNAQEBBQAE
-# ggIAqfKPNqOzqvO5JMEcJ/eOHMpJVqvX6srCXAMdz+wh2G5Sn7qGdOyfqCj4970l
-# sSbieuQ5/vny/ZJpuuU9LhCcZ+eJRUuCu68wEB6WQw/5yMr45tCTVqNfI275gpAK
-# mpa625dpxL3y7NSgwo3TbOiPfOH5hIYjrweV7Y6Vj7m0oewAnbCOiE/X8LLdMGFP
-# HPgUNVnP7xGMV1B4jwEtA/XP5dIrp62yEOMMjp9BDabiE8/HCdM+laysimylaKSJ
-# LCWKXLpJJhv6tEP3ftJCpwx++4V3O80LztrxOyRDCYsgSqsqyfZsXVDxlDS8sJoi
-# XIw/MSYmwuUKwwiQNKTzJoAf3pGVUjMq8/js9bAn96TNLIzpiU/KysZEfNvuzFOl
-# LBYfZowefwdF5GtP5ICyY1d8a/5eqkogKltOKWvOUA4f7PK1Vpb/LEio4y5BKceC
-# K0Esd9b5aD6gR1oxev7MG5MzbFU8W92mp6dukrZaQQmbCawVaHoG3pcO06p1S8lR
-# wX/caDeZGkASlNfjmNaTPaKn6JxU4K72OjKEOTvjgkn1xkk/Cg5s02G5/29cEOKC
-# FQYxmPHExY367ZqEAyuRJZe7MTKjfKwo03zqKvHeGIB9dQAadArAtRAIPhq60/NT
-# zHT5fjqCrhlbwB3wcW6uyjSljuIUTFFI0xgIZ8LHMUdvM4g=
+# ATAcBgkqhkiG9w0BCQUxDxcNMjIwODE3MjMxOTIwWjAvBgkqhkiG9w0BCQQxIgQg
+# Ff1RJSamto4igedq9xhWGm09INJbhBRxAnaQzYajIZ0wDQYJKoZIhvcNAQEBBQAE
+# ggIAM8IEcBu6RzUhoUi+guMHI2lBYLl8jFfoIdUaUwQVE5qyXlloKQVZ+8d+nsO3
+# Qwr75Bqszbj+y3pJnN6fWNIRdmztyZL/Jc4dQ2obgm09Ojy8d972aXSPYYDVvdCv
+# uzcDuTWyHpRcshlA1D43Z4ZunCe4rjYzHnAL7ocL7AIJwbr0E2JnzBSJ4X7ZelhI
+# hvJIY1n2ixcj7SiAWGQSSMjk6qq9kDc1+AcYlTq6QJnH7LKeIo9VXrh04PnAOA3k
+# 8dZo6ItdtkB5y0HEzMYkkQkZhs45icuHTFa5JEBRMF3JbZbgcaPhNGEsr300rzZL
+# 57KBX/w+8R3+dp4SxqHjhEqKlhdfGDzOxO9XCyqS3v4acouBB70lyiZM+jEwDA8G
+# tbUv2SOesGt+z5pV4X/m6RiNFP+GvUd7supyzvbKkwHyX9RnpINSGQ4GNWc/4XL6
+# lf25TsbzrxI0819j8YVE99iVjwjM/a0KSENE+gY0HovM6TXuPvtDh9l+7dq+10r8
+# deT6gxZpgRyJRZRLhasGydA2vpS9pePA8BGd3R24XYR2yrpi1T/SFoa87fPqTZLY
+# FBItuO/ey4SVv9jgHg45gLuCb4eK8Au7pEkTbcLsyqDow8h0+FrLJB42oucQ6C9I
+# B9gvEIl/O8T10C+cHfoO5AXmCeF+NORrfebyE6WOT3TIJ3Y=
 # SIG # End signature block
