@@ -1,13 +1,13 @@
 <#
 
 .SYNOPSIS
-    PowerShell script to remediate an Always On VPN profile listed in the AutoTriggerDisbledProfiles list.
+    PowerShell script to remediate an Always On VPN profile listed in the AutoTriggerDisbledProfiles list. This script is designed to be deployed using Intune remediations. In addition, it requires the user to have administrative rights when remediating a user tunnel profile not deployed in the All Users context.
 
 .EXAMPLE
     .\Remediate-AutoTriggerDisabledProfile.ps1
 
 .DESCRIPTION
-    This PowerShell script is deployed as a remediation script using Intune remediations.
+    When a user unchecks the 'Connect Automatically' box on their Always On VPN profile, the VPN profile is added to the AutoTriggerDisabledProfilesList registry key. This prevents the VPN profile from automatically connecting when the user's device starts up or when the user signs in. This PowerShell script remediates the issue by removing the VPN profile from the AutoTriggerDisabledProfilesList registry key.
 
 .LINK
     https://github.com/richardhicks/endpointmanager/blob/main/Remediate-AutoTriggerDisabledProfile.ps1
@@ -19,9 +19,9 @@
     https://directaccess.richardhicks.com/
 
 .NOTES
-    Version:        1.0
+    Version:        1.1
     Creation Date:  December 29, 2023
-    Last Updated:   December 29, 2023
+    Last Updated:   February 22, 2024
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -40,36 +40,8 @@ Param (
 
 )
 
-# Validate VPN profile
-Write-Verbose "Searching VPN profiles for `"$ProfileName`"."
-
-If ($AllUserConnection) {
-
-    # Get VPN profile running in the user's context
-    $Vpn = Get-VpnConnection -Name $ProfileName -AllUserConnection -ErrorAction SilentlyContinue
-
-}
-
-Else {
-
-    # Get VPN profile running in the 'all users' context
-    $Vpn = Get-VpnConnection -Name $ProfileName -ErrorAction SilentlyContinue
-
-}
-
-If ($Null -eq $Vpn) {
-
-    # Exit if VPN profile does not exist
-    Write-Warning "VPN connection `"$ProfileName`" not found."
-    Return
-
-}
-
-Else {
-
-    Write-Verbose "VPN connection `"$ProfileName`" found."
-
-}
+# Enable logging
+Start-Transcript -Path $env:TEMP\Remediate-AutoTriggerDisabledProfile.log
 
 # Use transaction for registry updates
 Start-Transaction
@@ -226,3 +198,6 @@ Stop-Process -Id $Id -Force
 # Pause before restarting the RasMan service
 Start-Sleep -Seconds 5
 Start-Service RasMan
+
+# Stop logging
+Stop-Transcript
