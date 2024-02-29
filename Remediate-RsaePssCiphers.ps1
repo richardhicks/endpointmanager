@@ -9,6 +9,8 @@
 .DESCRIPTION
     This PowerShell script is deployed as a remediation script using Proactive Remediations in Microsoft Endpoint Manager/Intune.
 
+    IMPORTANT NOTE: Removing RSAE-PSS ciphers may cause compatibility issues with some applications and services. It may be necessary to target individual devices experincing these issues. Always test thoroughly before deploying this script in a production environment.
+
 .LINK
     https://github.com/richardhicks/endpointmanager/blob/main/Remediate-RsaePssCiphers.ps1
 
@@ -22,9 +24,9 @@
     https://directaccess.richardhicks.com/
 
 .NOTES
-    Version:        1.0.1
+    Version:        1.0.2
     Creation Date:  March 24, 2023
-    Last Updated:   February 7, 2024
+    Last Updated:   February 29, 2024
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -63,7 +65,7 @@ Try {
 
     Else {
 
-        Write-Warning 'Unable to read $RegPath.'
+        Write-Warning "Unable to read $RegPath."
 
     }
 
@@ -80,8 +82,8 @@ Catch {
 # SIG # Begin signature block
 # MIInGwYJKoZIhvcNAQcCoIInDDCCJwgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNNp12lQGqRxSyfu/uVJIo5fh
-# IzOggiDDMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUsJjR9dCM2SIpizYsqlDGu9vQ
+# TciggiDDMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkqhkiG9w0B
 # AQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBBc3N1cmVk
 # IElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAwWhcNMzExMTA5MjM1OTU5WjBiMQsw
@@ -261,30 +263,30 @@ Catch {
 # NiBTSEEzODQgMjAyMSBDQTECEAFmchIElUK4sup54tMHrEQwCQYFKw4DAhoFAKB4
 # MBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQB
 # gjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkE
-# MRYEFEMZ3DFNBsC7+8hEZ87hyIliZ8VFMA0GCSqGSIb3DQEBAQUABIIBgAxDTZho
-# yqqgG+ApYRH6YMvxpwuhicOoTS4XK6gYb1LffQws+XSYmmuLHCGhHwyIQgs6Sh7i
-# qP6RjsIcMdVCaCZbUIaGpeS331delEc9cSVUJ/wZhHuJaeHR/xrdVgMhrGc+bm5T
-# AerqukWQhCuEeiW4CkzWHaYXKhQpZX6Z2G4D3+RUn6sq1dsrBD3Ukr6Nrho25VGJ
-# 1ADlUIso7LM9lP9+RjBz0Jq1/n4I8f931oxjjXf90044t8u6C66OJx+T47691+Ej
-# hka8gZ0JYXPB4HuZPUS7QnrktzJvllX9dGAw4x1D6v1DPlXPIJ3pHcTjMjcdNfAq
-# AnZhJYf5pWqXywkmdI5wnoGvYr50jjPThpVz/K601G74MAdQND5PS2Rs0MwBib/x
-# JpTT7E/4jwflcZ6DkaQDV5dO/7/dLVfSb+iJiZkjKRFQcq43ZzAy8TuQ7yWXDQiH
-# ZoKtqvCRPUrafR1xieLKqVFZE+kRPyXdq1VqzjpuRxqkLmLCL9wdMXeoa6GCAyAw
+# MRYEFGpGSugcQF1Rgfd9zVkesAk5M0hcMA0GCSqGSIb3DQEBAQUABIIBgGZMj9R9
+# 1LEiOsxah8BCc//az6lgNVwaMkbVzj+MiY31L1DotOe1mteHflhfw9qj/kcrWl4x
+# +4rqUgEM8olSyKDhSgZAJFn/8I6F7Y2t9D24WdYUTZxnVb8JTlGqMn0OoVNPZnCz
+# Y37rkfaFUUDEcmgau/Br8oGIyjutPCLDQugI1RizgR2fzsWnX0iSQpLYqAAmq7A2
+# 5JsC6lQlWIcU6665dSu/wBfH10+ZKQAKeIxOC5E3APU91VAPFO4qHnqgPCABE8DA
+# d34z1Hu94D//FaF2R40tchRf+pFlEgVpvfkX37N5lU9xqIpWpNY2OC/7+UomOP+b
+# /gT4d81xAUWVegl7qbJhjVTRVt0Llr6GTv3ZuoB4mK3sVfqwzwKLHOM6kf8xV8Ya
+# VhHttdxxQszYAZ+DCuQYjaE5H9DBSSDbjlkO4DnZ3CLFsg9+t7un0/Kvt/iZKFmC
+# +1/S6VqaAwpXamKb+duPt6eJFXOwPxaDWHYrnVtJIKf4df1PnEh2j2CknqGCAyAw
 # ggMcBgkqhkiG9w0BCQYxggMNMIIDCQIBATB3MGMxCzAJBgNVBAYTAlVTMRcwFQYD
 # VQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UEAxMyRGlnaUNlcnQgVHJ1c3RlZCBH
 # NCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBpbmcgQ0ECEAVEr/OUnQg5pr/bP1/l
 # YRYwDQYJYIZIAWUDBAIBBQCgaTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-# CSqGSIb3DQEJBTEPFw0yNDAyMDcyMDQ0NTRaMC8GCSqGSIb3DQEJBDEiBCCvDgRq
-# 5K8Y7HvAimqqQgjj6dHHYQI1PCpqexJT5C3tvDANBgkqhkiG9w0BAQEFAASCAgBz
-# a5T8eBmwqzyGATEVjB0WvqEPFGIhu4M3fzzQ6v5WnnSdWYenkQwRCpmyS4KcFJgc
-# jSywdmox/jToluksDsJTcCMawbsyMIpE9a/H+2C/mP0nEWhIhDHd+65hq8hJUUW8
-# hlqMGNVzk7FR/zCKlAqLCK0ogUTcd/ozxx2DGBIh8zL8NKU4eqQqx+uUi4u9cZiz
-# cfsFJ6ePblM7mFgS9c6dreuXq/r0dCmNI0kAJktrLExbqpEaqdEf+Dge3WfMpEeQ
-# ph/VpoMVNMJOU2aGXU6/5kU79Y2VekTYf2n854tsm78YFf77kVmbtF/NVKARVp1v
-# rHWrmH/3At4sFYNBQpsx7Iam3Ka6cHu3iMsYcVkujovrtFmLvqEPsyc84ufckFbb
-# ACYcT/YlXF27klKzkyGpeEH4Tgq7e3zrHTCpEuCOSr+jX1E8/mO15dGOk0BCoSiY
-# Yab/hUKzEM2w2HZu6s+6MhTJcD8GRLqRIsckRKB5lQR77XP5Or00TAxcbnItP6lk
-# t6UbqXKBg4CbzSE6LTmbyC+YF1jrrQ3e3EKTASoY5Cbh5mZPbJInQf1S0c3iT5k1
-# s9k89P+FlgC1MtDgwpY+i/ax4xkmPIruNDFOScRcD0smRJeIJ8tUeFgAoN/zW/P2
-# JrRwmZ6CYA2emPFSfcWBCgagzRaW1bIhCNtiNJCjcQ==
+# CSqGSIb3DQEJBTEPFw0yNDAyMjkxNzIyMTVaMC8GCSqGSIb3DQEJBDEiBCDdEs6I
+# e4dicLpLBQDSRzflDGonW91zgrFJu0tMBHhU0TANBgkqhkiG9w0BAQEFAASCAgCQ
+# litlhvnlQs+cXone8YGkJ554LFmp3w5K5QbVUV09oiPNvbhhQdP810NLdDQw/H7T
+# J3oOfB7+vOcXWpObalx073x9C5kgNiS3JLwpAMxBJOlxyI+PUOj7cEW/hGq3FI9P
+# NHKxY6C+53NwUoymkJfCIkSDoIewlPZ1j1PpL/Eh0VWUAA7M+Zi2uPk5Hb7nViY7
+# P4kyQ5G+JNTeCKdUEdEAf1gDr2EULotOkpaSme0vJcjKQM8fuk+HNquKQ0jS7WTd
+# 5Mh5oisZRyST2CEnAj9ykljZr30ZX53YxEUzkffwcZtDgmfM+14WbrC8TcXFXVg8
+# ywr44Autebepde8rwhrOl1U49FDQN7algCL9xc5P4bullEdMSb4pSylaUQG28/oE
+# xGv9s1cVctRZVkXt/g0AAP4Eaj4yBS+RXzghtcY2LzoLQDPKuwy0zStl6my1sUGs
+# gsGtZwt+Sm2bkHc/Xc19WmLYoxwFUwbtD43oG9KHJB7F2NgCKi2ho+a2jDxwtoYL
+# ulzU71uks1arIeJTPP7w97xuY08659nxSJED94yCryLLtniNeSIF8eXekOsG1laR
+# FSNl5H4AcTvdqma0ZLkO2I+s/2L8XwGTlyMAEyxFo4+LM73BkHNLdPPdgumyQIwm
+# 1G2EyRYRpTwndJsVf5WaE0nVGf5FcBKETJ1UC2krtA==
 # SIG # End signature block
