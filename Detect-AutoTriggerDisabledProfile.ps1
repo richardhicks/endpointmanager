@@ -1,7 +1,7 @@
 <#
 
 .SYNOPSIS
-    PowerShell script to detect if an Always On VPN profile is listed in the AutoTriggerDisbledProfiles list.
+    PowerShell script to detect if an Always On VPN profile is listed in the AutoTriggerDisabledProfiles list.
 
 .EXAMPLE
     .\Detect-AutoTriggerDisabledProfile.ps1
@@ -19,9 +19,9 @@
     https://directaccess.richardhicks.com/
 
 .NOTES
-    Version:        1.0.3
+    Version:        1.0.5
     Creation Date:  February 2, 2022
-    Last Updated:   December 29, 2023
+    Last Updated:   June 29, 2026
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -43,14 +43,14 @@ Try {
 
     If ($AutoTriggerDisabledProfile -eq $ProfileName) {
 
-        Write-Warning "The AutoTriggerDisabledProfilesList registry key includes the Always On VPN profile ""$ProfileName""."
+        Write-Warning "The AutoTriggerDisabledProfilesList registry key includes the Always On VPN profile ""$ProfileName"". Remediation required."
         Exit 1
 
     }
 
     Else {
 
-        Write-Warning "The AutoTriggerDisabledProfilesList registy key does not include the Always On VPN profile ""$ProfileName""."
+        Write-Warning "The AutoTriggerDisabledProfilesList registry key does not include the Always On VPN profile ""$ProfileName"". Remediation not required."
         Exit 0
 
     }

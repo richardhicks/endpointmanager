@@ -1,7 +1,7 @@
 <#
 
 .SYNOPSIS
-    PowerShell script to remediate an Always On VPN profile listed in the AutoTriggerDisbledProfiles list. This script is designed to be deployed using Intune remediations. In addition, it requires the user to have administrative rights when remediating a user tunnel profile not deployed in the All Users context.
+    PowerShell script to remediate an Always On VPN profile listed in the AutoTriggerDisabledProfiles list. This script is designed to be deployed using Intune remediations. In addition, it requires the user to have administrative rights when remediating a user tunnel profile not deployed in the All Users context.
 
 .EXAMPLE
     .\Remediate-AutoTriggerDisabledProfile.ps1
@@ -19,9 +19,9 @@
     https://directaccess.richardhicks.com/
 
 .NOTES
-    Version:        1.1
+    Version:        1.2
     Creation Date:  December 29, 2023
-    Last Updated:   February 22, 2024
+    Last Updated:   June 29, 2026
     Author:         Richard Hicks
     Organization:   Richard M. Hicks Consulting, Inc.
     Contact:        rich@richardhicks.com
@@ -40,11 +40,18 @@ Param (
 
 )
 
-# Enable logging
-Start-Transcript -Path $env:TEMP\Remediate-AutoTriggerDisabledProfile.log
+# Create log directory if it doesn't exist
+$LogPath = "$env:ProgramData\RMHCI\PowerShell"
 
-# Use transaction for registry updates
-Start-Transaction
+If (-not (Test-Path -Path $LogPath)) {
+
+    [void](New-Item -Path $LogPath -ItemType Directory -Force)
+
+}
+
+# Start transcript
+Write-Verbose 'Starting transcript...'
+Start-Transcript -Path "$LogPath\Remediate-AutoTriggerDisabledProfile_$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
 # Search AutoTriggerDisabledProfilesList for VPN profile
 $Path = 'HKLM:\System\CurrentControlSet\Services\RasMan\Config\'
@@ -78,7 +85,7 @@ If ($DisabledProfiles) {
         Write-Verbose 'Profile found. Removing entry...'
         $List.Remove($ProfileName)
         Write-Verbose 'Updating the registry...'
-        Set-ItemProperty -Path $Path -Name $Name -Value $List.Values -UseTransaction
+        Set-ItemProperty -Path $Path -Name $Name -Value $List.Values
 
     }
 
@@ -123,7 +130,6 @@ $Parameters = @{
     Name           = 'UserSID'
     PropertyType   = 'String'
     Value          = $SID
-    UseTransaction = $True
 
 }
 
@@ -136,15 +142,38 @@ $Parameters = @{
     Name           = 'AutoTriggerProfileEntryName'
     PropertyType   = 'String'
     Value          = $ProfileName
-    UseTransaction = $True
 
 }
 
 New-ItemProperty @Parameters | Out-Null
 
+# Get VPN connection profile
+Try {
+
+    If ($AllUserConnection) {
+
+        $Vpn = Get-VpnConnection -Name $ProfileName -AllUserConnection -ErrorAction Stop
+
+    }
+
+    Else {
+
+        $Vpn = Get-VpnConnection -Name $ProfileName -ErrorAction Stop
+
+    }
+
+}
+
+Catch {
+
+    Write-Warning "Unable to find VPN connection profile `"$ProfileName`". $($_.Exception.Message)"
+    Return
+
+}
+
 # Add VPN profile GUID to registry
-Write-Verbose "Adding VPN GUID $GUID to registry..."
 [guid]$Guid = $Vpn | Select-Object -ExpandProperty Guid
+Write-Verbose "Adding VPN GUID $Guid to registry..."
 $Binary = $Guid.ToByteArray()
 
 $Parameters = @{
@@ -153,7 +182,6 @@ $Parameters = @{
     Name           = 'AutoTriggerProfileGUID'
     PropertyType   = 'Binary'
     Value          = $Binary
-    UseTransaction = $True
 
 }
 
@@ -180,14 +208,10 @@ $Parameters = @{
     Name           = 'AutoTriggerProfilePhonebookPath'
     PropertyType   = 'String'
     Value          = $Path
-    UseTransaction = $True
 
 }
 
 New-ItemProperty @Parameters | Out-Null
-
-# Commit registry changes
-Complete-Transaction
 
 # Stop the RasMan service
 $Id = Get-CimInstance -ClassName win32_service | Where-Object Name -eq 'RasMan' | Select-Object -ExpandProperty ProcessId
