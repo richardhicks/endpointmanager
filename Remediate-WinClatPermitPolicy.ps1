@@ -4,9 +4,9 @@
     Intune Remediations remediation script for the WinCLAT permit policy.
 
 .DESCRIPTION
-    Writes the PermitNonCellularCLAT policy value (DWORD) under HKLM\SOFTWARE\Policies\Microsoft\Windows\TCPIP\v6Transition\IPxlatCfgSvc, creating the key if needed. This is the value the "Permit non-cellular CLAT" Group Policy setting writes. A value of 1 permits CLAT and 0 prevents it; either value places the setting under policy control.
+    Writes the PermitNonCellularCLAT policy value (DWORD) under HKLM\SOFTWARE\Policies\Microsoft\Windows\TCPIP\v6Transition\IPxlatCfgSvc, creating the key if needed. This is the value the "Permit non-cellular CLAT" Group Policy setting writes. A value of 1 permits WinCLAT and 0 prevents it; either value places the setting under policy control.
 
-    The script writes the registry only. It does not run netsh or restart the IP Translation Configuration Service, so the test can show whether the service picks up the change on its own.
+    The script writes the registry only. It does not run netsh or restart the IP Translation Configuration Service, because Windows applies the new value on its own.
 
 .INPUTS
     None.

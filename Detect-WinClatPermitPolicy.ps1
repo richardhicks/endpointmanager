@@ -6,7 +6,7 @@
 .DESCRIPTION
     Checks whether the PermitNonCellularCLAT policy value is present under HKLM\SOFTWARE\Policies\Microsoft\Windows\TCPIP\v6Transition\IPxlatCfgSvc with the required value. Exits 0 when it is, and 1 when it is missing or different, so that Intune runs the remediation script.
 
-    The script reads the registry only. It does not run netsh, because a netsh call can start the IP Translation Configuration Service and affect the test.
+    The script reads the registry only and makes no changes.
 
 .INPUTS
     None.
